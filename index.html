@@ -128,15 +128,10 @@
 
         .problem-point {
             padding: 30px;
-            border-left: 4px solid #404040;
+            border-left: 4px solid #ff6b35;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.028);
+            background: rgba(64, 64, 64, 0.35);
 
-        }
-
-        .problem-point:hover {
-            border-left-color: #ff6b35;
-            transform: translateX(10px);
         }
 
         .problem-point h3 {
@@ -238,6 +233,8 @@
         .nav-dots {
             display: flex;
             gap: 12px;
+            flex-wrap: wrap;
+            max-width: 400px;
         }
 
         .nav-dot {
@@ -284,6 +281,23 @@
         .nav-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
+        }
+
+        .fullscreen-btn {
+            background: transparent;
+            border: 1px solid #666666;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .fullscreen-btn:hover {
+            border-color: #ff6b35;
+            color: #ff6b35;
         }
 
         .slide-counter {
@@ -353,56 +367,222 @@
                     </div>
                 </div>
 
-                <!-- Slide 2: El Problema -->
-                <div class="slide problema" id="slide-1">
-                    <h1 class="slide-title">El Problema Actual</h1>
-                    <div class="content-grid">
-                        <div class="problem-point">
-                            <h3>🏗️ Silos de Información</h3>
-                            <p>Los modelos más sofisticados están <span class="highlighter">aislados de los datos</span>, atrapados detrás de sistemas heredados.</p>
-                        </div>
-                        <div class="problem-point">
-                            <h3>🔧 Integraciones Fragmentadas</h3>
-                            <p>Cada nueva fuente de datos requiere <span class="highlighter">implementación personalizada</span>, haciendo difícil escalar sistemas conectados.</p>
-                        </div>
-                        <div class="problem-point">
-                            <h3>⚡ Falta de Estándar</h3>
-                            <p>Sin un protocolo universal, los desarrolladores mantienen <span class="highlighter">conectores separados</span> para cada fuente de datos.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 3: ¿Qué es MCP? -->
-                <div class="slide que-es-mcp" id="slide-2">
+                <!-- Slide 2: ¿Qué es MCP? -->
+                <div class="slide que-es-mcp" id="slide-1">
                     <h1 class="slide-title">¿Qué es MCP?</h1>
                     <div class="definition-section">
                         <div class="main-definition">
                             <p class="big-text">
-                                MCP es un <span class="highlighter">protocolo estándar abierto</span> que permite a los desarrolladores construir conexiones seguras y bidireccionales entre fuentes de datos y herramientas impulsadas por IA.
+                                El <span class="highlighter">Model Context Protocol (MCP)</span> es un estándar abierto desarrollado por Anthropic que proporciona una forma estandarizada para que los LLMs se conecten con fuentes de datos externas y herramientas.
+                            </p>
+                            <p class="big-text">
+                                Esencialmente, es un <span class="highlighter">"USB-C"</span> para aplicaciones de IA.
                             </p>
                         </div>
+
                         <div class="key-benefits">
                             <div class="benefit">
                                 <div class="benefit-icon">🔗</div>
                                 <div class="benefit-text">
                                     <h3>Conexiones Universales</h3>
-                                    <p>Un solo protocolo para <span class="highlighter">todas las fuentes de datos</span></p>
+                                    <p>Un solo protocolo para todas las fuentes de datos</p>
                                 </div>
                             </div>
                             <div class="benefit">
                                 <div class="benefit-icon">🛡️</div>
                                 <div class="benefit-text">
                                     <h3>Seguridad Integrada</h3>
-                                    <p>Conexiones <span class="highlighter">seguras y controladas</span> por defecto</p>
+                                    <p>Conexiones seguras y controladas por defecto</p>
                                 </div>
                             </div>
                             <div class="benefit">
                                 <div class="benefit-icon">⚡</div>
                                 <div class="benefit-text">
                                     <h3>Escalabilidad</h3>
-                                    <p>Arquitectura <span class="highlighter">sostenible y extensible</span></p>
+                                    <p>Arquitectura sostenible y extensible</p>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="main-definition" style="margin-top: 40px;">
+                            <p class="big-text" style="font-size: 1.3rem; color: #A4A4A4FF;">
+                                Introducido en noviembre 2024 como marco de código abierto para estandarizar la integración entre sistemas de IA y herramientas externas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Tres Casos Prácticos Complejos - Problemas que MCP Resuelve -->
+                <div class="slide problemas-mcp" id="slide-2">
+                    <h1 class="slide-title">Casos de Usos Prácticos</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h4>1. El Asistente Personal Empresarial Multi-Sistema</h4>
+                            <p><span class="highlight-text" style="margin-right: 1rem"><b>ANTES</b></span>Una empresa
+                                necesita
+                                un agente AI
+                                que
+                                funcione como asistente
+                                ejecutivo
+                                       integrado. El agente debe monitorear calendarios de Google Workspace, filtrar emails importantes de Outlook, extraer información de documentos en SharePoint, consultar datos de CRM en Salesforce, actualizar tickets en Jira, y generar reportes en Power BI. Cada integración requiere diferentes protocolos de autenticación (OAuth 2.0, API keys, SAML), distintos formatos de datos (JSON, XML, CSV), y múltiples sistemas de rate limiting. La empresa debe mantener 6 conectores personalizados, cada uno con su propia lógica de error handling, retry mechanisms, y data transformation layers. Cuando Microsoft actualiza su Graph API o Salesforce modifica su REST endpoints, el sistema completo se desestabiliza.</p>
+                            <p><span class="highlight-text" style="margin-right: 1rem"><b>CON MCP</b></span>Un protocolo único estandariza toda la
+                                comunicación mediante JSON-RPC
+                                2.0. Cada servicio (Google, Microsoft, Salesforce, Atlassian) expone un servidor MCP que maneja internamente sus especificidades técnicas. El agente utiliza un solo cliente MCP que puede interactuar uniformemente con todos los servicios. Los cambios en APIs individuales se absorben a nivel del servidor MCP correspondiente, sin afectar la lógica principal del agente. La empresa reduce el overhead de mantenimiento de múltiples integraciones a una sola interfaz estándar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Caso 2 -->
+                <div class="slide problemas-mcp part-2" id="slide-3">
+                    <h1 class="slide-title">Casos de Usos Prácticos</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h4>2. La Startup SaaS Construyendo Ecosistema AI</h4>
+                            <p><span class="highlight-text" style="margin-right: 1rem"><b>ANTES</b></span>Una plataforma de business intelligence
+                                quiere
+                                permitir que usuarios integren sus dashboards con múltiples agentes AI del mercado. Deben crear SDKs específicos para la API de OpenAI GPT-4, conectores nativos para Claude de Anthropic, adaptadores para Gemini de Google, integraciones con Cohere, y wrappers para modelos open-source como Llama. Cada plataforma AI tiene diferentes esquemas de function calling, distintos formatos de tool descriptions, variados sistemas de streaming responses, y protocolos de authentication únicos. La startup debe mantener equipos especializados para cada integración, documentación fragmentada, y ciclos de testing independientes. Cuando aparece un nuevo player en el mercado AI, requieren meses de desarrollo para crear una nueva integración desde cero.</p>
+                            <p><span class="highlight-text" style="margin-right: 1rem"><b>CON MCP</b></span>La startup desarrolla un único servidor MCP
+                                que
+                                expone sus funcionalidades de business intelligence. Cualquier aplicación AI que soporte el protocolo MCP puede conectarse automáticamente sin desarrollo adicional. Los nuevos agentes AI que adopten MCP se integran instantáneamente. La empresa puede enfocarse en mejorar su producto core en lugar de mantener múltiples interfaces técnicas. El ecosistema crece orgánicamente conforme más agentes adoptan el estándar MCP.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 5: Caso 3 -->
+                <div class="slide problemas-mcp part-3" id="slide-4">
+                    <h1 class="slide-title">Casos de Usos Prácticos</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h4>3. El Pipeline de Análisis de Datos Multi-Fuente</h4>
+                            <p><span class="highlight-text" style="margin-right: 1rem"><b>ANTES</b></span>Un agente de data science debe ejecutar
+                                workflows
+                                complejos que involucran múltiples sistemas heterogéneos. El proceso típico incluye: extraer datos de APIs REST con paginación compleja, procesar archivos Excel con macros y fórmulas, ejecutar queries SQL parametrizadas contra PostgreSQL con connection pooling, invocar modelos de machine learning en endpoints TensorFlow Serving, generar visualizaciones usando librerías Python específicas, y distribuir resultados vía Slack webhooks con rich formatting. Cada etapa requiere diferentes bibliotecas, manejo específico de errores, transformaciones de datos ad-hoc, y mecanismos de recovery únicos. El sistema es frágil porque una falla en cualquier paso requiere debugging manual de múltiples interfaces incompatibles. Scaling horizontalmente implica replicar toda la complejidad de integración.</p>
+                            <p><span class="highlight-text" style="margin-right: 1rem;"><b>CON MCP</b></span>Cada fuente
+                                de
+                                datos y herramienta
+                                expone un
+                                servidor MCP estándar. El agente orchestrator utiliza un cliente MCP uniforme que abstrae las complejidades específicas de cada sistema. Los servers MCP manejan internamente aspectos como connection pooling, retry logic, data serialization, y error recovery. El workflow se convierte en una secuencia de llamadas MCP estandarizadas con consistent error handling y logging. La observabilidad mejora porque todos los sistemas hablan el mismo protocolo. Scaling se simplifica porque la complejidad está encapsulada en cada servidor MCP independiente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 6: Arquitectura MCP -->
+                <div class="slide arquitectura-mcp" id="slide-5">
+                    <h1 class="slide-title">Arquitectura MCP</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Componentes Principales</h3>
+                            <p>La arquitectura MCP se basa en tres componentes fundamentales que trabajan en conjunto para crear un ecosistema de comunicación estándar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 7: Servidores MCP -->
+                <div class="slide servidores-mcp" id="slide-6">
+                    <h1 class="slide-title">Servidores MCP</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>¿Qué son los Servidores MCP?</h3>
+                            <p>Los servidores MCP son procesos que exponen recursos, herramientas y prompts específicos a través del protocolo MCP. Actúan como intermediarios entre las aplicaciones de IA y las fuentes de datos o servicios externos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 8: Clientes MCP -->
+                <div class="slide clientes-mcp" id="slide-7">
+                    <h1 class="slide-title">Clientes MCP</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Aplicaciones Host</h3>
+                            <p>Los clientes MCP son aplicaciones de IA (como Claude Desktop, IDEs, o aplicaciones personalizadas) que se conectan a servidores MCP para acceder a sus capacidades y datos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 9: Transporte y Comunicación -->
+                <div class="slide transporte-mcp" id="slide-8">
+                    <h1 class="slide-title">Transporte y Comunicación</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>JSON-RPC 2.0</h3>
+                            <p>MCP utiliza JSON-RPC 2.0 como protocolo de comunicación, permitiendo intercambio de mensajes estandarizado entre clientes y servidores através de diferentes medios de transporte.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 10: Recursos MCP -->
+                <div class="slide recursos-mcp" id="slide-9">
+                    <h1 class="slide-title">Recursos MCP</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Tipos de Recursos</h3>
+                            <p>Los recursos en MCP pueden ser archivos, datos de bases de datos, APIs web, o cualquier fuente de información que pueda ser expuesta de manera estructurada a través del protocolo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 11: Tools (Herramientas) -->
+                <div class="slide tools-mcp" id="slide-10">
+                    <h1 class="slide-title">Tools (Herramientas)</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Funciones Ejecutables</h3>
+                            <p>Las herramientas MCP permiten a los modelos de IA ejecutar acciones específicas, desde consultas de bases de datos hasta llamadas a APIs externas, todo a través de una interfaz estandarizada.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 12: Prompts MCP -->
+                <div class="slide prompts-mcp" id="slide-11">
+                    <h1 class="slide-title">Prompts MCP</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Templates Reutilizables</h3>
+                            <p>Los prompts MCP son plantillas predefinidas que pueden ser reutilizadas por diferentes aplicaciones de IA, proporcionando contexto consistente y especializado.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 13: Seguridad en MCP -->
+                <div class="slide seguridad-mcp" id="slide-12">
+                    <h1 class="slide-title">Seguridad en MCP</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Modelo de Seguridad</h3>
+                            <p>MCP implementa controles de acceso granulares, autenticación robusta y auditoría completa para garantizar que las integraciones sean seguras por diseño.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 14: Casos de Uso Empresariales -->
+                <div class="slide casos-empresariales" id="slide-13">
+                    <h1 class="slide-title">Casos de Uso Empresariales</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Implementaciones Reales</h3>
+                            <p>Desde automatización de procesos hasta análisis de datos en tiempo real, MCP está transformando cómo las empresas integran IA en sus operaciones diarias.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 15: Ecosystem y Adopción -->
+                <div class="slide ecosystem-mcp" id="slide-14">
+                    <h1 class="slide-title">Ecosystem y Adopción</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>Crecimiento del Ecosystem</h3>
+                            <p>El ecosistema MCP está creciendo rápidamente con contribuciones de la comunidad open source y adopción por parte de empresas líderes en tecnología.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 16: Conclusiones -->
+                <div class="slide conclusiones" id="slide-15">
+                    <h1 class="slide-title">Conclusiones</h1>
+                    <div class="content-grid">
+                        <div class="problem-point">
+                            <h3>El Futuro de las Integraciones AI</h3>
+                            <p>MCP representa un cambio paradigmático hacia integraciones AI estandarizadas, simplificadas y escalables. Es el futuro de cómo la IA interactuará con el mundo digital.</p>
                         </div>
                     </div>
                 </div>
@@ -413,13 +593,28 @@
         <div class="navigation">
             <div class="nav-dots">
                 <button class="nav-dot active" onclick="goToSlide(0)" title="Portada"></button>
-                <button class="nav-dot" onclick="goToSlide(1)" title="El Problema"></button>
-                <button class="nav-dot" onclick="goToSlide(2)" title="¿Qué es MCP?"></button>
+                <button class="nav-dot" onclick="goToSlide(1)" title="¿Qué es MCP?"></button>
+                <button class="nav-dot" onclick="goToSlide(2)" title="Casos de Usos Prácticos"></button>
+                <button class="nav-dot" onclick="goToSlide(3)" title="Problema 1"></button>
+                <button class="nav-dot" onclick="goToSlide(4)" title="Problema 2"></button>
+                <button class="nav-dot" onclick="goToSlide(5)" title="Problema 3"></button>
+                <button class="nav-dot" onclick="goToSlide(6)" title="Arquitectura MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(7)" title="Servidores MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(8)" title="Clientes MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(9)" title="Transporte y Comunicación"></button>
+                <button class="nav-dot" onclick="goToSlide(10)" title="Recursos MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(11)" title="Tools (Herramientas)"></button>
+                <button class="nav-dot" onclick="goToSlide(12)" title="Prompts MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(13)" title="Seguridad en MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(14)" title="Casos de Uso Empresariales"></button>
+                <button class="nav-dot" onclick="goToSlide(15)" title="Ecosystem y Adopción"></button>
+                <button class="nav-dot" onclick="goToSlide(16)" title="Conclusiones"></button>
             </div>
             <div class="nav-controls">
                 <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Anterior</button>
-                <span class="slide-counter" id="slideCounter">1 / 3</span>
+                <span class="slide-counter" id="slideCounter">1 / 16</span>
                 <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Siguiente →</button>
+                <button class="fullscreen-btn" onclick="toggleFullscreen()" id="fullscreenBtn">⛶</button>
             </div>
         </div>
     </div>
@@ -427,7 +622,7 @@
     <script>
         let currentSlide = 0;
         let isAnimating = false;
-        const totalSlides = 3;
+        const totalSlides = 16;
 
         function updateSlideDisplay() {
             // Hide all slides
@@ -490,6 +685,25 @@
                     document.getElementById('slideWrapper').classList.remove('animating');
                     isAnimating = false;
                 }, 300);
+            }
+        }
+
+        function toggleFullscreen() {
+            const elem = document.documentElement;
+            const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+
+            if (isFullscreen) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            } else {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                }
             }
         }
 
