@@ -412,8 +412,74 @@
                     </div>
                 </div>
 
-                <!-- Slide 3: Tres Casos Prácticos Complejos - Problemas que MCP Resuelve -->
-                <div class="slide problemas-mcp" id="slide-2">
+                <!-- Slide 3: Definición Técnica MCP -->
+                <div class="slide definicion-tecnica-mcp" id="slide-2">
+                    <h1 class="slide-title">¿Cómo se define el Model Context Protocol?</h1>
+                    <div class="definition-section">
+                        <div class="main-definition" style="margin-bottom: 0;">
+                            <p class="big-text" style="font-size: 1.3rem;">
+                                El Model Context Protocol (MCP) define un protocolo abierto y versionado para
+                                conectar aplicaciones de modelos de lenguaje extenso (LLM) con fuentes de datos externas, prompts y herramientas ejecutables.
+                            </p>
+                            <p class="big-text" style=" font-size: 1.3rem;">
+                                El protocolo está basado libremente en <span class="highlighter">JSON-RPC 2.0</span> y se construye sobre las lecciones aprendidas del Language Server Protocol.
+                            </p>
+                            <p class="big-text" style=" font-size: 1.2rem;">
+                                Los hosts (aplicaciones LLM) crean clientes que se conectan a servidores que exponen contexto (recursos, prompts) y funcionalidad (herramientas). Las conexiones son con estado; ambos lados negocian capacidades soportadas durante la inicialización y se comunican usando mensajes JSON estructurados.
+                            </p>
+                        </div>
+
+                        <!-- Major Features Section -->
+                        <div class="main-definition" style="margin-bottom: 0;">
+                            <h3 style="font-size: 1.6rem; color: #ff6b35;">Características Principales del
+                                Protocolo</h3>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px;">
+                                <div class="benefit" style="flex-direction: column; padding: 18px;">
+                                        <h4 style="font-size: 1.05rem; margin: 0; color: #ffffff; text-align: center;">Integración Componible</h4>
+                                    <p style="font-size: 0.9rem; line-height: 1.4; margin: 0; color: #b5b5b5;">
+                                        Los hosts pueden combinar múltiples servidores que exponen prompts, recursos o herramientas usando un protocolo compartido. Un mecanismo de negociación de capacidades permite al cliente y servidor acordar características soportadas.
+                                    </p>
+                                </div>
+
+                                <div class="benefit" style="flex-direction: column; padding: 18px;">
+                                        <h4 style="font-size: 1.05rem; margin: 0; color: #ffffff;text-align:
+                                                center;">Mensajería Estructurada</h4>
+                                    <p style="font-size: 0.9rem; line-height: 1.4; margin: 0; color: #b5b5b5;">
+                                        Las peticiones, respuestas y notificaciones siguen las reglas de JSON-RPC 2.0 (identificadores únicos para peticiones, sin ID en notificaciones). Un campo _meta está reservado para metadatos.
+                                    </p>
+                                </div>
+
+                                <div class="benefit" style="flex-direction: column; padding: 18px;">
+                                        <h4 style="font-size: 1.05rem; margin: 0; color: #ffffff; text-align:
+                                                center;">Sesiones con
+                                            Estado</h4>
+                                    <p style="font-size: 0.9rem; line-height: 1.4; margin: 0; color: #b5b5b5;">
+                                        Los clientes mantienen una sesión por servidor. Los mensajes de ciclo de vida controlan la inicialización, operación y cierre del sistema.
+                                    </p>
+                                </div>
+
+                                <div class="benefit" style="flex-direction: column; padding: 18px;">
+                                        <h4 style="font-size: 1.05rem; margin: 0; color: #ffffff; text-align:
+                                                center;">Seguridad y
+                                            Confianza</h4>
+                                    <p style="font-size: 0.9rem; line-height: 1.4; margin: 0; color: #b5b5b5;">
+                                        Los usuarios deben aprobar explícitamente el acceso a datos e invocación de herramientas; los servidores no pueden ver prompts completos (el host media). El protocolo enfatiza autorización basada en OAuth y manejo cuidadoso de tokens de acceso.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="main-definition">
+                            <p class="big-text" style="font-size: 1.1rem; color: #A4A4A4FF;">
+                                MCP tiene como objetivo permitir integraciones componibles sin exponer datos de usuario o claves API, y refuerza la confianza y seguridad a través del consentimiento del usuario y la negociación de capacidades.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Casos de Usos Prácticos -->
+                <div class="slide problemas-mcp" id="slide-3">
                     <h1 class="slide-title">Casos de Usos Prácticos</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -432,8 +498,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 4: Caso 2 -->
-                <div class="slide problemas-mcp part-2" id="slide-3">
+                <!-- Slide 5: Caso 2 -->
+                <div class="slide problemas-mcp part-2" id="slide-4">
                     <h1 class="slide-title">Casos de Usos Prácticos</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -448,8 +514,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 5: Caso 3 -->
-                <div class="slide problemas-mcp part-3" id="slide-4">
+                <!-- Slide 6: Caso 3 -->
+                <div class="slide problemas-mcp part-3" id="slide-5">
                     <h1 class="slide-title">Casos de Usos Prácticos</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -466,30 +532,67 @@
                     </div>
                 </div>
 
-                <!-- Slide 6: Arquitectura MCP -->
-                <div class="slide arquitectura-mcp" id="slide-5">
-                    <h1 class="slide-title">Arquitectura MCP</h1>
-                    <div class="content-grid">
+                <!-- Slide 7: Arquitectura MCP -->
+                <div class="slide arquitectura-mcp" id="slide-6">
+                    <h1 class="slide-title" style="margin-bottom: 0;">Arquitectura MCP</h1>
+                    <div class="content-grid" style="margin-top: 0; margin-bottom: 0; padding-bottom: 0; padding-top: 0;">
                         <div class="problem-point">
                             <h3>Componentes Principales</h3>
                             <p>La arquitectura MCP se basa en tres componentes fundamentales que trabajan en conjunto para crear un ecosistema de comunicación estándar.</p>
+
+                            <h4>Roles del Sistema</h4>
+                            <p><span class="highlight-text" style="margin-right: 0.5rem;"><b>Host</b></span> Coordina
+                                todo el sistema, gestiona sesiones, aplica seguridad y obtiene autorización del usuario. Crea clientes y puede integrar múltiples servidores. Los Hosts controlan qué prompts/resources/tools están disponibles para el LLM.</p>
+
+                            <p><span class="highlight-text" style="margin-right: 0.5rem;"><b>Client</b></span> Creado
+                                por el host. Cada cliente se conecta exactamente a un servidor, negocia capacidades, mantiene el estado de la sesión, maneja suscripciones y aísla mensajes para ese servidor específico.</p>
+
+                            <p><span class="highlight-text" style="margin-right: 0.5rem;"><b>Server</b></span> Expone
+                                prompts, resources y tools. Los servidores solicitan sampling o elicitation vía el cliente; deben respetar restricciones de seguridad y no pueden inspeccionar toda la conversación.</p>
+
+                            <h4>Negociación de Capacidades</h4>
+                            <p>Durante la fase de initialize, clientes y servidores declaran qué features soportan. Los clientes pueden declarar capacidades como roots, sampling, elicitation o experimental capabilities, mientras que los servidores pueden declarar prompts, resources, tools, completions o logging.</p>
+
+                            <p>Cada capability puede tener sub-opciones (como listChanged o subscribe). Ambas partes deben usar únicamente las features que fueron negociadas exitosamente.</p>
                         </div>
                     </div>
+
                 </div>
 
-                <!-- Slide 7: Servidores MCP -->
-                <div class="slide servidores-mcp" id="slide-6">
-                    <h1 class="slide-title">Servidores MCP</h1>
-                    <div class="content-grid">
+                <!-- Slide 8: Ciclo de Vida MCP -->
+                <div class="slide servidores-mcp" id="slide-7">
+                    <h1 class="slide-title">Ciclo de Vida de la Comunicación</h1>
+                    <div class="content-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
                         <div class="problem-point">
-                            <h3>¿Qué son los Servidores MCP?</h3>
-                            <p>Los servidores MCP son procesos que exponen recursos, herramientas y prompts específicos a través del protocolo MCP. Actúan como intermediarios entre las aplicaciones de IA y las fuentes de datos o servicios externos.</p>
+                            <h3>Lifecycle</h3>
+                            <p>El ciclo de vida de la conexión tiene tres fases:</p>
+
+                            <div style="margin: 1.5rem 0;">
+                                <h4 style="color: #4CAF50; margin-bottom: 0.5rem;">Inicialización</h4>
+                                <p style="margin-bottom: 1rem;">El cliente envía una petición initialize conteniendo su versión de protocolo soportada y capacidades. El servidor responde con su propia versión y capacidades. Hasta que el cliente envíe una notificación initialized, el servidor no debe enviar peticiones excepto ping y notifications/message.</p>
+                            </div>
+
+                            <div style="margin: 1.5rem 0;">
+                                <h4 style="color: #2196F3; margin-bottom: 0.5rem;">Operación</h4>
+                                <p style="margin-bottom: 1rem;">Ambas partes intercambian requests, responses y notifications usando únicamente la versión de protocolo y capacidades negociadas.</p>
+                            </div>
+
+                            <div style="margin: 1.5rem 0;">
+                                <h4 style="color: #FF9800; margin-bottom: 0.5rem;">Shutdown</h4>
+                                <p style="margin-bottom: 1rem;">El cliente termina la sesión. Para transportes stdio, el cliente debe cerrar streams y enviar señales apropiadas; para transportes HTTP, puede cerrar la conexión o enviar un HTTP DELETE.</p>
+                            </div>
+
+                            <p style="font-size: 0.9rem; color: #888;">Los timeouts y errores son parte del lifecycle. Las implementaciones deben establecer timeouts de request, reiniciarlos cuando se reciben notifications de progreso y manejar versiones de protocolo no coincidentes o fallos de negociación de capacidades cerrando la conexión.</p>
+                        </div>
+
+                        <div class="diagram-container" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                            <img src="images/workflow_diagram.svg" alt="MCP Communication Workflow" style="max-width: 100%; height: auto; max-height: 600px;">
                         </div>
                     </div>
                 </div>
 
-                <!-- Slide 8: Clientes MCP -->
-                <div class="slide clientes-mcp" id="slide-7">
+                <!-- Slide 9: Clientes MCP -->
+                <div class="slide clientes-mcp" id="slide-8">
                     <h1 class="slide-title">Clientes MCP</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -499,8 +602,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 9: Transporte y Comunicación -->
-                <div class="slide transporte-mcp" id="slide-8">
+                <!-- Slide 10: Transporte y Comunicación -->
+                <div class="slide transporte-mcp" id="slide-9">
                     <h1 class="slide-title">Transporte y Comunicación</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -510,8 +613,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 10: Recursos MCP -->
-                <div class="slide recursos-mcp" id="slide-9">
+                <!-- Slide 11: Recursos MCP -->
+                <div class="slide recursos-mcp" id="slide-10">
                     <h1 class="slide-title">Recursos MCP</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -521,8 +624,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 11: Tools (Herramientas) -->
-                <div class="slide tools-mcp" id="slide-10">
+                <!-- Slide 12: Tools (Herramientas) -->
+                <div class="slide tools-mcp" id="slide-11">
                     <h1 class="slide-title">Tools (Herramientas)</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -532,8 +635,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 12: Prompts MCP -->
-                <div class="slide prompts-mcp" id="slide-11">
+                <!-- Slide 13: Prompts MCP -->
+                <div class="slide prompts-mcp" id="slide-12">
                     <h1 class="slide-title">Prompts MCP</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -543,8 +646,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 13: Seguridad en MCP -->
-                <div class="slide seguridad-mcp" id="slide-12">
+                <!-- Slide 14: Seguridad en MCP -->
+                <div class="slide seguridad-mcp" id="slide-13">
                     <h1 class="slide-title">Seguridad en MCP</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -554,8 +657,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 14: Casos de Uso Empresariales -->
-                <div class="slide casos-empresariales" id="slide-13">
+                <!-- Slide 15: Casos de Uso Empresariales -->
+                <div class="slide casos-empresariales" id="slide-14">
                     <h1 class="slide-title">Casos de Uso Empresariales</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -565,8 +668,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 15: Ecosystem y Adopción -->
-                <div class="slide ecosystem-mcp" id="slide-14">
+                <!-- Slide 16: Ecosystem y Adopción -->
+                <div class="slide ecosystem-mcp" id="slide-15">
                     <h1 class="slide-title">Ecosystem y Adopción</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -576,8 +679,8 @@
                     </div>
                 </div>
 
-                <!-- Slide 16: Conclusiones -->
-                <div class="slide conclusiones" id="slide-15">
+                <!-- Slide 17: Conclusiones -->
+                <div class="slide conclusiones" id="slide-16">
                     <h1 class="slide-title">Conclusiones</h1>
                     <div class="content-grid">
                         <div class="problem-point">
@@ -594,25 +697,26 @@
             <div class="nav-dots">
                 <button class="nav-dot active" onclick="goToSlide(0)" title="Portada"></button>
                 <button class="nav-dot" onclick="goToSlide(1)" title="¿Qué es MCP?"></button>
-                <button class="nav-dot" onclick="goToSlide(2)" title="Casos de Usos Prácticos"></button>
-                <button class="nav-dot" onclick="goToSlide(3)" title="Problema 1"></button>
-                <button class="nav-dot" onclick="goToSlide(4)" title="Problema 2"></button>
-                <button class="nav-dot" onclick="goToSlide(5)" title="Problema 3"></button>
-                <button class="nav-dot" onclick="goToSlide(6)" title="Arquitectura MCP"></button>
-                <button class="nav-dot" onclick="goToSlide(7)" title="Servidores MCP"></button>
-                <button class="nav-dot" onclick="goToSlide(8)" title="Clientes MCP"></button>
-                <button class="nav-dot" onclick="goToSlide(9)" title="Transporte y Comunicación"></button>
-                <button class="nav-dot" onclick="goToSlide(10)" title="Recursos MCP"></button>
-                <button class="nav-dot" onclick="goToSlide(11)" title="Tools (Herramientas)"></button>
-                <button class="nav-dot" onclick="goToSlide(12)" title="Prompts MCP"></button>
-                <button class="nav-dot" onclick="goToSlide(13)" title="Seguridad en MCP"></button>
-                <button class="nav-dot" onclick="goToSlide(14)" title="Casos de Uso Empresariales"></button>
-                <button class="nav-dot" onclick="goToSlide(15)" title="Ecosystem y Adopción"></button>
-                <button class="nav-dot" onclick="goToSlide(16)" title="Conclusiones"></button>
+                <button class="nav-dot" onclick="goToSlide(2)" title="Definición Técnica"></button>
+                <button class="nav-dot" onclick="goToSlide(3)" title="Casos de Usos Prácticos"></button>
+                <button class="nav-dot" onclick="goToSlide(4)" title="Problema 1"></button>
+                <button class="nav-dot" onclick="goToSlide(5)" title="Problema 2"></button>
+                <button class="nav-dot" onclick="goToSlide(6)" title="Problema 3"></button>
+                <button class="nav-dot" onclick="goToSlide(7)" title="Arquitectura MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(8)" title="Servidores MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(9)" title="Clientes MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(10)" title="Transporte y Comunicación"></button>
+                <button class="nav-dot" onclick="goToSlide(11)" title="Recursos MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(12)" title="Tools (Herramientas)"></button>
+                <button class="nav-dot" onclick="goToSlide(13)" title="Prompts MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(14)" title="Seguridad en MCP"></button>
+                <button class="nav-dot" onclick="goToSlide(15)" title="Casos de Uso Empresariales"></button>
+                <button class="nav-dot" onclick="goToSlide(16)" title="Ecosystem y Adopción"></button>
+                <button class="nav-dot" onclick="goToSlide(17)" title="Conclusiones"></button>
             </div>
             <div class="nav-controls">
                 <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Anterior</button>
-                <span class="slide-counter" id="slideCounter">1 / 16</span>
+                <span class="slide-counter" id="slideCounter">1 / 17</span>
                 <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Siguiente →</button>
                 <button class="fullscreen-btn" onclick="toggleFullscreen()" id="fullscreenBtn">⛶</button>
             </div>
@@ -622,7 +726,7 @@
     <script>
         let currentSlide = 0;
         let isAnimating = false;
-        const totalSlides = 16;
+        const totalSlides = 17;
 
         function updateSlideDisplay() {
             // Hide all slides
