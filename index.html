@@ -150,6 +150,7 @@
       border-radius: 8px;
       background: var(--panel-strong);
       transition: transform 0.2s ease, background 0.2s ease;
+      flex-direction: column;
     }
     .benefit:hover { background: var(--panel-stronger); transform: translateY(-2px); }
     .benefit-icon { font-size: clamp(1.5rem, 2.5vw, 2rem); min-width: 40px; }
@@ -380,15 +381,15 @@
               <p class="big-text">Las Server Features proporcionan el contexto y funcionalidad utilizados por los hosts. Existen tres primitivas fundamentales:</p>
             </div>
             <div class="key-benefits">
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Prompts</h4>
                 <p>Plantillas pre-definidas o instrucciones que guían las interacciones con LLM.</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Resources</h4>
                 <p>Datos estructurados o contenido que proporciona contexto (archivos, esquemas de base de datos, etc.).</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Tools</h4>
                 <p>Funciones ejecutables que permiten a los modelos realizar acciones o obtener información.</p>
               </div>
@@ -408,17 +409,17 @@
               <p class="big-text">Los prompts permiten que los servidores expongan plantillas de mensajes que los usuarios pueden elegir. Los clientes descubren prompts disponibles vía <span class="highlighter">prompts/list</span>, obtienen prompts específicos vía <span class="highlighter">prompts/get</span> y reciben actualizaciones vía <span class="highlighter">notifications/prompts/list_changed</span>.</p>
             </div>
             <div class="key-benefits">
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Capabilities</h4>
                 <p>Los servidores que soportan prompts declaran la capability prompts y pueden indicar si soportan notificaciones listChanged.</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Operaciones Principales</h4>
                 <p><strong>Listing</strong> – los clientes envían prompts/list (soporta paginación). La respuesta contiene un array de prompts con campos name, title, description y una lista opcional de arguments.</p>
                 <p><strong>Getting</strong> – para recuperar un prompt, los clientes llaman prompts/get con el nombre del prompt y valores de argumentos. El servidor retorna una descripción y un array de mensajes con roles (user o assistant) y content.</p>
                 <p><strong>List change notification</strong> – los servidores emiten notifications/prompts/list_changed cuando la lista de prompts cambia.</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Estructura de Datos</h4>
                 <p>Un Prompt incluye:</p>
                 <p><strong>name</strong> – identificador único</p>
@@ -442,16 +443,16 @@
               <p class="big-text">Los resources permiten que los servidores expongan archivos o conjuntos de datos a los clientes. Cada resource se identifica por un <span class="highlighter">URI</span> y puede incluir name, title, description, MIME type y size.</p>
             </div>
             <div class="key-benefits">
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Capabilities</h4>
                 <p>Los servidores declaran la capability resources y pueden soportar subscribe (suscripciones a resources individuales) y listChanged (notificaciones cuando la lista de resources cambia).</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Operaciones Principales</h4>
                 <p><strong>Listing</strong> – resources/list retorna una página de resources (con uri, name, title, description, mimeType) y un nextCursor opcional para paginación.</p>
                 <p><strong>Reading</strong> – resources/read obtiene el contenido de un resource. La respuesta contiene una lista de bloques de contenido (texto o binario). Los bloques de texto incluyen text, mientras que los bloques binarios incluyen blob (base64) y mimeType.</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Resource Templates y Subscriptions</h4>
                 <p>Los servidores pueden exponer resource templates usando URI templates; los clientes los listan vía resources/templates/list. Los clientes pueden suscribirse a actualizaciones de resources usando resources/subscribe y recibir notifications/resources/updated cuando un resource cambia.</p>
               </div>
@@ -475,16 +476,16 @@
               <p class="big-text">Los tools permiten que los servidores expongan funciones que el LLM puede llamar. Los tools son <span class="highlighter">model-controlled</span> pero siempre deben incluir <span class="highlighter">human-in-the-loop</span> para acciones sensibles.</p>
             </div>
             <div class="key-benefits">
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Capabilities</h4>
                 <p>Los servidores declaran la capability tools y pueden soportar notificaciones listChanged.</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Operaciones Principales</h4>
                 <p><strong>Listing</strong> – tools/list retorna un array de tools con campos: name, title, description e inputSchema. Se soporta paginación.</p>
                 <p><strong>Calling</strong> – tools/call invoca un tool por nombre con argumentos JSON. El resultado incluye content (un array de bloques de contenido) y una flag isError.</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Estructura de Datos</h4>
                 <p>Una definición de Tool comprende:</p>
                 <p><strong>name</strong> – identificador único</p>
@@ -496,7 +497,7 @@
               </div>
             </div>
             <div class="key-benefits">
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Tipos de Resultados</h4>
                 <p>Los resultados de tools pueden incluir:</p>
                 <p><strong>Text content</strong> – {"type":"text", "text":"..."}</p>
@@ -506,7 +507,7 @@
                 <p><strong>Embedded resources</strong> – resources completos incluidos inline</p>
                 <p><strong>Structured content</strong> – objetos JSON en campo structuredContent</p>
               </div>
-              <div class="benefit" style="flex-direction: column; align-items: flex-start;">
+              <div class="benefit">
                 <h4>Validación</h4>
                 <p>Si un tool define un outputSchema, los servidores DEBEN asegurar que los resultados se conformen a él y los clientes DEBERÍAN validar el resultado. La validación ayuda a LLMs y clientes a analizar resultados correctamente.</p>
               </div>
