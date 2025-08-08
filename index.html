@@ -241,6 +241,115 @@
       .key-benefits { grid-template-columns: 1fr; }
       .nav-dots { max-width: 55vw; }
     }
+
+    /* Estilos específicos para el slide Prompts (#slide-9) para reducir espaciado */
+    #slide-9 .slide-title {
+      margin-bottom: 0 !important;
+    }
+
+    #slide-9 .key-benefits {
+        margin-bottom: 0.5rem !important;
+        margin-top: 0;
+    }
+
+    #slide-9 .benefit h4 {
+      margin: 0 0 15px 0 !important;
+      font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
+      line-height: 1.3 !important;
+      text-align: center !important;
+    }
+
+    #slide-9 .benefit p {
+      margin: 0 0 18px 0 !important;
+      font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
+      line-height: 1.4 !important;
+      text-align: left !important;
+    }
+
+    /* Estilos específicos para el slide Tools (#slide-11) para reducir espaciado */
+    #slide-11 .benefit h4 {
+      margin: 0 0 7px 0 !important;
+      font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
+      line-height: 1.2 !important;
+      text-align: center !important;
+    }
+
+    #slide-11 .benefit p {
+      margin: 0 0 10px 0 !important;
+      font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
+      line-height: 1.3 !important;
+      text-align: left !important;
+    }
+
+    #slide-11 .benefit p:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    #slide-11 .benefit {
+      padding: 7px 10px !important;
+      gap: 0 !important;
+      align-items: flex-start !important;
+    }
+
+    #slide-11 .key-benefits {
+      gap: 7px !important;
+      margin-top: 10px !important;
+    }
+
+    #slide-11 .definition-section {
+      gap: 10px !important;
+    }
+
+    #slide-11 .main-definition h3 {
+      margin: 0 0 7px 0 !important;
+    }
+
+    #slide-11 .main-definition .big-text {
+      margin: 0 0 5px 0 !important;
+    }
+
+    /* Estilos específicos para el slide Resources (#slide-10) para reducir espaciado */
+    #slide-10 .benefit h4 {
+      margin: 0 0 10px 0 !important;
+      font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
+      line-height: 1.2 !important;
+      text-align: center !important;
+    }
+
+    #slide-10 .benefit p {
+      margin: 0 0 12px 0 !important;
+      font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
+      line-height: 1.3 !important;
+      text-align: left !important;
+    }
+
+    #slide-10 .benefit p:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    #slide-10 .benefit {
+      padding: 10px 12px !important;
+      gap: 0 !important;
+      align-items: flex-start !important;
+    }
+
+    #slide-10 .key-benefits {
+      gap: 10px !important;
+      margin-top: 1rem !important;
+    }
+
+    #slide-10 .definition-section {
+      gap: 5rem !important;
+    }
+
+    #slide-10 .main-definition h3 {
+      margin: 0 0 10px 0 !important;
+      font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+    }
+
+    #slide-10 .main-definition .big-text {
+      margin: 0 0 8px 0 !important;
+    }
   </style>
 </head>
 <body>
@@ -457,13 +566,13 @@
 
         <!-- Slide 11: Resources -->
         <div class="slide transporte-mcp" id="slide-10">
-          <h1 class="slide-title">Resources</h1>
+          <h1 class="slide-title" style="margin-bottom: 0">Resources</h1>
           <div class="definition-section">
             <div class="main-definition">
               <h3>Definición y Propósito</h3>
               <p class="big-text">Los resources permiten que los servidores expongan archivos o conjuntos de datos a los clientes. Cada resource se identifica por un <span class="highlighter">URI</span> y puede incluir name, title, description, MIME type y size.</p>
             </div>
-            <div class="key-benefits">
+            <div class="key-benefits" style="margin-bottom: 0;">
               <div class="benefit">
                 <h4>Capabilities</h4>
                 <p>Los servidores declaran la capability resources y pueden soportar subscribe (suscripciones a resources individuales) y listChanged (notificaciones cuando la lista de resources cambia).</p>
@@ -480,7 +589,8 @@
             </div>
             <div class="main-definition">
               <h3>Esquemas URI Estándar</h3>
-              <p class="big-text"><span class="highlighter">https://</span> (recursos web)</p>
+              <p class="big-text" style="margin-left: -0.1rem"><span class="highlighter">https://</span> (recursos
+                  web)</p>
               <p class="big-text"><span class="highlighter">file://</span> (sistema de archivos)</p>
               <p class="big-text"><span class="highlighter">git://</span> (control de versiones)</p>
               <p class="big-text">Esquemas personalizados deben seguir RFC 3986</p>
@@ -494,7 +604,7 @@
           <div class="definition-section">
             <div class="main-definition">
               <h3>Definición y Propósito</h3>
-              <p class="big-text">Los tools permiten que los servidores expongan funciones que el LLM puede llamar. Los tools son <span class="highlighter">model-controlled</span> pero siempre deben incluir <span class="highlighter">human-in-the-loop</span> para acciones sensibles.</p>
+              <p class="big-text">Los servers permiten que los servidores expongan funciones que el LLM puede llamar. Los tools son <span class="highlighter">model-controlled</span> pero siempre deben incluir <span class="highlighter">human-in-the-loop</span> para acciones sensibles.</p>
             </div>
             <div class="key-benefits">
               <div class="benefit">
