@@ -40,7 +40,7 @@
       width: 100vw;
       height: 100vh; /* fallback */
       height: 100dvh; /* evita saltos en móviles */
-      background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1_animated.gif');
+      background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1.png');
       background-size: cover;
       background-position: center;
       /* background-attachment: fixed;  <-- evita issues en iOS al no haber scroll */
@@ -48,30 +48,34 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      transition: background-image 1s ease-out;
     }
 
-    /* Cuando el GIF termine, cambiar a un fondo transparente para detener la animación */
-    .presentation-container.gif-ended {
+    /* Capa del GIF animado que se desvanecerá */
+    .presentation-container::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1.png');
+      background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1_animated.gif');
       background-size: cover;
       background-position: center;
-      transition: opacity 1s ease-in;
-      pointer-events: none;    }
-
-
-    /* Clase que se activará cuando el GIF termine */
-    .presentation-container.gif-ended::before {
       opacity: 1;
+      transition: opacity 2s ease-out;
+      pointer-events: none;
+      z-index: 0;
     }
 
+    /* Cuando el GIF termine, hacer fade out del GIF animado */
+    .presentation-container.gif-ended::before {
+      opacity: 0;
+    }
+
+    /* Asegurar que el contenido esté por encima del fondo */
     .slide-wrapper {
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: calc(100% - var(--nav-h));
       display: grid;
