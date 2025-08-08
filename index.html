@@ -40,7 +40,7 @@
       width: 100vw;
       height: 100vh; /* fallback */
       height: 100dvh; /* evita saltos en móviles */
-      background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1.png');
+      background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1_animated.gif');
       background-size: cover;
       background-position: center;
       /* background-attachment: fixed;  <-- evita issues en iOS al no haber scroll */
@@ -48,6 +48,27 @@
       position: relative;
       display: flex;
       flex-direction: column;
+      transition: background-image 1s ease-out;
+    }
+
+    /* Cuando el GIF termine, cambiar a un fondo transparente para detener la animación */
+    .presentation-container.gif-ended {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1.png');
+      background-size: cover;
+      background-position: center;
+      transition: opacity 1s ease-in;
+      pointer-events: none;    }
+
+
+    /* Clase que se activará cuando el GIF termine */
+    .presentation-container.gif-ended::before {
+      opacity: 1;
     }
 
     .slide-wrapper {
@@ -587,6 +608,58 @@
   </div>
 
   <script>
+    // Variables para manejo del background animado
+    let gifDuration = null;
+    let gifStartTime = null;
+    let backgroundTransitionHandled = false;
+
+    // Función para precargar la imagen estática y detectar duración del GIF
+    function initBackgroundTransition() {
+      // Precargar imagen estática
+      const staticImg = new Image();
+      staticImg.src = './images/bg_image1.png';
+
+      // Crear imagen temporal para detectar duración del GIF
+      const gifImg = new Image();
+      gifImg.onload = function() {
+        // Estimar duración del GIF basado en tamaño de archivo o usar valor por defecto
+        // Como no podemos detectar la duración real del GIF fácilmente,
+        // usamos un valor estimado. Puedes ajustar este valor según tu GIF específico.
+        gifDuration = 8000; // 8 segundos - ajusta según tu GIF
+        gifStartTime = Date.now();
+
+        // Configurar timer para la transición
+        setTimeout(() => {
+          if (!backgroundTransitionHandled) {
+            transitionToStaticBackground();
+          }
+        }, gifDuration);
+
+        // También verificar periódicamente en caso de que el timer no sea exacto
+        const checkInterval = setInterval(() => {
+          if (Date.now() - gifStartTime >= gifDuration && !backgroundTransitionHandled) {
+            transitionToStaticBackground();
+            clearInterval(checkInterval);
+          }
+        }, 500);
+      };
+
+      gifImg.src = './images/bg_image1_animated.gif';
+    }
+
+    // Función para hacer la transición a la imagen estática
+    function transitionToStaticBackground() {
+      if (backgroundTransitionHandled) return;
+
+      backgroundTransitionHandled = true;
+      const container = document.querySelector('.presentation-container');
+
+      // Agregar clase que activa la transición CSS
+      container.classList.add('gif-ended');
+
+      console.log('Transición a imagen estática activada');
+    }
+
     let currentSlide = 0;
     let isAnimating = false;
     const slideWrapper = document.getElementById('slideWrapper');
@@ -740,6 +813,9 @@
       resizeRaf = requestAnimationFrame(fitActiveSlide);
     });
     window.addEventListener('orientationchange', () => setTimeout(fitActiveSlide, 100));
+
+    // Iniciar transición de fondo
+    initBackgroundTransition();
   </script>
 </body>
 </html>
