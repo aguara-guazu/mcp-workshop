@@ -199,6 +199,14 @@
       object-fit: contain;
     }
 
+    #slide-11-use-cases p {
+        text-align: left;
+        padding-left: 35%;
+    }
+    .text-padding{
+        text-align: left;
+        padding-left: 40%;
+    }
     /* Slide 8 específico - Ciclo de Vida con espaciados fluidos */
     #slide-7 .content-grid {
       display: grid !important;
@@ -364,6 +372,13 @@
 
     #slide-14 .benefit p a:hover {
       text-decoration: underline;
+    }
+    #schema-uri-standard{
+        padding-top: 4rem;
+    }
+    #personalized-schemas{
+        padding-top: 2rem;
+        padding-left: 8%;
     }
   </style>
 </head>
@@ -608,7 +623,7 @@
                 <p><strong>name</strong> – nombre legible opcional para visualización</p>
               </div>
             </div>
-            <div class="main-definition">
+            <div class="main-definition" id="slide-11-use-cases">
               <h3>Casos de Uso</h3>
               <p class="big-text">• <span class="highlighter">Directorios de proyecto</span> específicos</p>
               <p class="big-text">• <span class="highlighter">Múltiples repositorios</span> (frontend/backend)</p>
@@ -641,12 +656,14 @@
               </div>
             </div>
             <div class="main-definition">
-              <h3>Esquemas URI Estándar</h3>
-              <p class="big-text" style="margin-left: -0.1rem"><span class="highlighter">https://</span> (recursos
+              <h3 id="schema-uri-standard">Esquemas URI Estándar</h3>
+              <p class="big-text text-padding"><span class="highlighter">https://</span> (recursos
                   web)</p>
-              <p class="big-text"><span class="highlighter">file://</span> (sistema de archivos)</p>
-              <p class="big-text"><span class="highlighter">git://</span> (control de versiones)</p>
-              <p class="big-text">Esquemas personalizados deben seguir RFC 3986</p>
+              <p class="big-text text-padding"><span class="highlighter">file://</span> (sistema de
+                  archivos)</p>
+              <p class="big-text text-padding"><span class="highlighter">git://</span> (control de
+                  versiones)</p>
+              <p class="big-text" id="personalized-schemas">Esquemas personalizados deben seguir RFC 3986</p>
             </div>
           </div>
         </div>
