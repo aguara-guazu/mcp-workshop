@@ -523,12 +523,16 @@
           <div class="definition-section">
             <div class="main-definition">
               <h3>Overview General</h3>
-              <p class="big-text">Las Server Features proporcionan el contexto y funcionalidad utilizados por los hosts. Existen tres primitivas fundamentales:</p>
+              <p class="big-text">Las Server Features proporcionan el contexto y funcionalidad utilizados por los hosts. Existen cuatro primitivas fundamentales:</p>
             </div>
             <div class="key-benefits">
               <div class="benefit">
                 <h4>Prompts</h4>
                 <p>Plantillas pre-definidas o instrucciones que guían las interacciones con LLM.</p>
+              </div>
+              <div class="benefit">
+                <h4>Roots</h4>
+                <p>Definen los límites del sistema de archivos donde los servidores pueden operar, especificando directorios y archivos accesibles.</p>
               </div>
               <div class="benefit">
                 <h4>Resources</h4>
@@ -540,7 +544,7 @@
               </div>
             </div>
             <div class="main-definition">
-              <p class="big-text">Estas primitivas siguen una jerarquía de control: los <span class="highlighter">prompts son user-controlled</span>, los <span class="highlighter">resources son application-controlled</span> y los <span class="highlighter">tools son model-controlled</span>.</p>
+              <p class="big-text">Estas primitivas siguen una jerarquía de control: los <span class="highlighter">prompts son user-controlled</span>, los <span class="highlighter">roots definen boundaries</span>, los <span class="highlighter">resources son application-controlled</span> y los <span class="highlighter">tools son model-controlled</span>.</p>
             </div>
           </div>
         </div>
@@ -579,8 +583,42 @@
           </div>
         </div>
 
-        <!-- Slide 11: Resources -->
+        <!-- Slide 11: Roots -->
         <div class="slide transporte-mcp" id="slide-10">
+          <h1 class="slide-title" style="margin-bottom: 0">Roots</h1>
+          <div class="definition-section">
+            <div class="main-definition">
+              <h3>Definición y Propósito</h3>
+              <p class="big-text">Los roots definen los límites del sistema de archivos donde los servidores pueden operar. Permiten especificar qué <span class="highlighter">directorios y archivos</span> están accesibles, usando URIs <span class="highlighter">file://</span> únicos.</p>
+            </div>
+            <div class="key-benefits" style="margin-bottom: 0;">
+              <div class="benefit">
+                <h4>Capabilities</h4>
+                <p>Los clientes que soportan roots DEBEN declarar la capability roots y pueden indicar si soportan listChanged para notificaciones cuando la lista cambia.</p>
+              </div>
+              <div class="benefit">
+                <h4>Operaciones Principales</h4>
+                <p><strong>Listing</strong> – roots/list retorna un array de roots con uri (identificador único file://) y name opcional (nombre legible para visualización).</p>
+                <p><strong>Notifications</strong> – notifications/roots/list_changed se envía cuando la lista de roots cambia, permitiendo que los servidores actualicen su comprensión del acceso al sistema de archivos.</p>
+              </div>
+              <div class="benefit">
+                <h4>Estructura de Datos</h4>
+                <p>Un Root incluye:</p>
+                <p><strong>uri</strong> – identificador único (DEBE ser file:// URI)</p>
+                <p><strong>name</strong> – nombre legible opcional para visualización</p>
+              </div>
+            </div>
+            <div class="main-definition">
+              <h3>Casos de Uso</h3>
+              <p class="big-text">• <span class="highlighter">Directorios de proyecto</span> específicos</p>
+              <p class="big-text">• <span class="highlighter">Múltiples repositorios</span> (frontend/backend)</p>
+              <p class="big-text">• <span class="highlighter">Control de acceso</span> y seguridad</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 12: Resources -->
+        <div class="slide transporte-mcp" id="slide-11">
           <h1 class="slide-title" style="margin-bottom: 0">Resources</h1>
           <div class="definition-section">
             <div class="main-definition">
@@ -613,8 +651,8 @@
           </div>
         </div>
 
-        <!-- Slide 12: Tools (Herramientas) -->
-        <div class="slide tools-mcp" id="slide-11">
+        <!-- Slide 13: Tools (Herramientas) -->
+        <div class="slide tools-mcp" id="slide-12">
           <h1 class="slide-title">Tools</h1>
           <div class="definition-section">
             <div class="main-definition">
@@ -662,7 +700,7 @@
         </div>
 
         <!-- Slide 13: Seguridad en MCP -->
-        <div class="slide seguridad-mcp" id="slide-12">
+        <div class="slide seguridad-mcp" id="slide-13">
           <h1 class="slide-title">Consideraciones de Seguridad</h1>
           <div class="definition-section">
             <div class="key-benefits">
@@ -683,12 +721,12 @@
         </div>
 
         <!-- Slide 14: Demostración Práctica -->
-        <div class="slide casos-empresariales" id="slide-13">
+        <div class="slide casos-empresariales" id="slide-14">
           <h1 class="slide-title">Demostración Práctica</h1>
         </div>
 
         <!-- Slide 15: Fuentes y Recursos -->
-        <div class="slide ecosystem-mcp" id="slide-14">
+        <div class="slide ecosystem-mcp" id="slide-15">
           <h1 class="slide-title">Fuentes y Recursos</h1>
           <div class="definition-section">
             <div class="key-benefits">
@@ -725,7 +763,7 @@
         </div>
 
         <!-- Slide 16: Conclusiones -->
-        <div class="slide conclusiones" id="slide-15">
+        <div class="slide conclusiones" id="slide-16">
           <h1 class="slide-title">Conclusiones</h1>
           <div class="content-grid">
             <div class="problem-point">
