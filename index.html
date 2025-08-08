@@ -437,6 +437,12 @@
     #slide-15 .benefit p a:hover {
       text-decoration: none !important;
     }
+
+    /* New class for last slide background effect */
+    .presentation-container.last-slide-active::before {
+      opacity: 1 !important;
+      transition: opacity 2s ease-in !important;
+    }
   </style>
 </head>
 <body>
@@ -971,6 +977,14 @@
 
       // Ajustar escala para que quepa sin scroll
       requestAnimationFrame(() => fitActiveSlide());
+
+      // Handle last slide background
+      const container = document.querySelector('.presentation-container');
+      if (currentSlide === totalSlides - 1) {
+        container.classList.add('last-slide-active');
+      } else {
+        container.classList.remove('last-slide-active');
+      }
     }
 
     // 3) Auto-fit: escala .slide-content para encajar en el área visible del wrapper
