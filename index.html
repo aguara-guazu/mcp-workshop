@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Model Context Protocol (MCP) - Presentación</title>
   <link rel="icon" href="images/favicon.png" type="image/png" />
   <style>
@@ -17,7 +17,7 @@
       --accent: #ff6b35;
       --nav-h: 80px;
 
-      /* Tipografía fluida más conservadora */
+      /* Tipografía fluida conservadora */
       --h1: clamp(1.8rem, 5vw, 3.5rem);
       --h2: clamp(1.4rem, 3.5vw, 2.4rem);
       --h3: clamp(1.1rem, 2vw, 1.4rem);
@@ -30,21 +30,23 @@
       --gap-lg: clamp(2rem, 4vh, 4rem);
       --padding-sm: clamp(12px, 2vh, 24px);
       --padding-md: clamp(16px, 2.5vh, 32px);
+
+      /* Altura segura (considera notch/homebar) */
+      --nav-safe: calc(var(--nav-h) + max(0px, env(safe-area-inset-bottom)));
     }
 
-    /* Reset básico + layout sin scroll */
+    /* Reset básico + layout sin scroll de página */
     html, body { height: 100%; }
     html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); overflow: hidden; }
     * { box-sizing: border-box; }
 
     .presentation-container {
       width: 100vw;
-      height: 100vh; /* fallback */
-      height: 100dvh; /* evita saltos en móviles */
+      height: 100vh;        /* fallback */
+      height: 100dvh;       /* evita saltos en móviles */
       background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1.png');
       background-size: cover;
       background-position: center;
-      /* background-attachment: fixed;  <-- evita issues en iOS al no haber scroll */
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       position: relative;
       display: flex;
@@ -55,10 +57,7 @@
     .presentation-container::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('./images/bg_image1_animated.gif');
       background-size: cover;
       background-position: center;
@@ -68,21 +67,20 @@
       z-index: 0;
     }
 
-    /* Cuando el GIF termine, hacer fade out del GIF animado */
-    .presentation-container.gif-ended::before {
-      opacity: 0;
-    }
+    /* Cuando el GIF termine, hacer fade out */
+    .presentation-container.gif-ended::before { opacity: 0; }
 
-    /* Asegurar que el contenido esté por encima del fondo */
+    /* Contenido por encima del fondo */
     .slide-wrapper {
       position: relative;
       z-index: 1;
       width: 100%;
-      height: calc(100% - var(--nav-h));
+      height: calc(100% - var(--nav-safe));
+      min-height: 0;                        /* permite contraer en grid/flex */
       display: grid;
       place-items: center;
       transition: opacity 0.3s ease-in-out;
-      padding: 0; /* evita desbordes */
+      padding: 0;
     }
     .slide-wrapper.animating { opacity: 0; }
 
@@ -90,14 +88,23 @@
       width: 90%;
       max-width: 1200px;
       height: 90%;
+      max-height: 100%;
+      min-height: 0;
       padding: min(60px, 6vh);
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: center;  /* centrado por defecto */
       position: relative;
-      /* FIT SIN SCROLL */
       transform-origin: top center;
-      overflow: hidden; /* no scroll interno */
+      overflow: hidden;         /* por defecto sin scroll */
+    }
+    /* Scroll de rescate: activado por JS si hace falta */
+    .slide-content[data-scroll="auto"] {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding-right: calc(var(--padding-md) + 4px);
+      justify-content: flex-start; /* ANCLA ARRIBA cuando hay scroll */
     }
 
     .slide { display: none; }
@@ -107,15 +114,22 @@
       justify-content: center;
       gap: min(3vh, 40px);
     }
+    /* Si hay scroll, ancla también la slide arriba */
+    .slide-content[data-scroll="auto"] .slide.active { justify-content: flex-start; }
 
     /* Portada */
     .portada { text-align: center; align-items: center; }
     .hero-section { animation: fadeInUp 0.6s ease-out; }
-    .main-title { font-size: var(--h1); font-weight: 800; margin: 0 0 12px 0; line-height: 1.1; position: relative; z-index: 1; }
+    .main-title {
+      font-size: var(--h1); font-weight: 800; margin: 0 0 12px 0;
+      position: relative; z-index: 1;
+      text-wrap: balance; hyphens: auto; overflow-wrap: anywhere;
+      line-height: 1.15;
+    }
     .highlight-text { position: relative; display: inline-block; z-index: 1; margin-right: 1rem; padding-right: 0.5rem; }
     .highlight-text::after {
-      content: '';
-      position: absolute; left: -10px; right: -10px; top: 50%; height: 1em; background: var(--accent); opacity: 0.5; transform: translateY(-50%) rotate(-1deg); z-index: -1;
+      content: ''; position: absolute; left: -10px; right: -10px; top: 50%;
+      height: 1em; background: var(--accent); opacity: 0.5; transform: translateY(-50%) rotate(-1deg); z-index: -1;
     }
     .subtitle { font-size: var(--h2); font-weight: 300; margin: 0 0 24px 0; color: var(--muted); }
     .tagline { font-size: clamp(1.1rem, 1.2vw, 1.4rem); max-width: 800px; margin: 24px auto 0; }
@@ -126,6 +140,8 @@
       font-size: clamp(1.6rem, 3.5vw, 2.4rem);
       margin: 0 0 var(--gap-sm);
       text-align: center;
+      text-wrap: balance; hyphens: auto; overflow-wrap: anywhere;
+      line-height: 1.15;
     }
     .big-text { font-size: var(--p); line-height: 1.5; max-width: 1000px; margin: 0 auto; color: var(--fg); }
 
@@ -155,11 +171,7 @@
       margin: 0 0 var(--gap-sm);
     }
 
-    .definition-section {
-      display: flex;
-      flex-direction: column;
-      gap: var(--gap-md);
-    }
+    .definition-section { display: flex; flex-direction: column; gap: var(--gap-md); }
     .main-definition { text-align: center; }
 
     .key-benefits {
@@ -185,29 +197,26 @@
 
     .highlighter { position: relative; display: inline; padding: 2px 4px; background: rgba(255, 107, 53, 0.5); }
 
-    /* Diagramas / imágenes - Centrado vertical mejorado */
+    /* Diagramas / imágenes - Centrado + sin desbordes */
     .diagram-container {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
       padding: var(--padding-sm);
+      min-height: 0;
     }
     .diagram-container img {
       height: auto;
-        max-width: 160%;
+      max-width: 100%;
+      max-height: 100%;
       display: block;
       object-fit: contain;
     }
 
-    #slide-11-use-cases p {
-        text-align: left;
-        padding-left: 35%;
-    }
-    .text-padding{
-        text-align: left;
-        padding-left: 40%;
-    }
+    #slide-11-use-cases p { text-align: left; padding-left: 35%; }
+    .text-padding { text-align: left; padding-left: 40%; }
+
     /* Slide 8 específico - Ciclo de Vida con espaciados fluidos */
     #slide-7 .content-grid {
       display: grid !important;
@@ -216,23 +225,20 @@
       align-items: start !important;
       margin-top: var(--gap-sm) !important;
     }
-
-    #slide-7 .problem-point {
-      padding: var(--padding-sm) !important;
-    }
-
-    #slide-7 .diagram-container {
-      height: auto !important;
-      min-height: 300px !important;
-    }
+    #slide-7 .problem-point { padding: var(--padding-sm) !important; }
+    #slide-7 .diagram-container { height: auto !important; min-height: 300px !important; }
 
     /* Navegación */
     .navigation {
-      position: absolute; left: 0; right: 0; bottom: 0; height: var(--nav-h);
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: var(--nav-safe);
       background: rgba(26, 26, 26, 0.95); backdrop-filter: blur(10px);
-      display: flex; align-items: center; justify-content: space-between; padding: 0 24px; border-top: 1px solid #404040;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      padding-bottom: max(0px, env(safe-area-inset-bottom));
+      border-top: 1px solid #404040;
     }
-    .nav-dots { display: flex; gap: 10px; flex-wrap: wrap; max-width: 60vw; align-items: center; }
+    .nav-dots { display: flex; gap: 10px; flex-wrap: wrap; max-width: 60vw; align-items: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .nav-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--muted-2); background: transparent; cursor: pointer; transition: all 0.2s ease; }
     .nav-dot:hover { border-color: var(--accent); }
     .nav-dot.active { background: var(--accent); border-color: var(--accent); }
@@ -253,197 +259,174 @@
       .slide-content { padding: 24px; width: 94%; height: 90%; }
       .key-benefits { grid-template-columns: 1fr; }
       .nav-dots { max-width: 55vw; }
+      /* Quita paddings que empujan texto fuera de viewport */
+      #slide-11-use-cases p,
+      .text-padding { padding-left: 0 !important; text-align: left; }
     }
 
     /* Estilos específicos para el slide Prompts (#slide-9) para reducir espaciado */
-    #slide-9 .slide-title {
-      margin-bottom: 0 !important;
-    }
-
-    #slide-9 .key-benefits {
-        margin-bottom: 0.5rem !important;
-        margin-top: 0;
-    }
-
+    #slide-9 .slide-title { margin-bottom: 0 !important; }
+    #slide-9 .key-benefits { margin-bottom: 0.5rem !important; margin-top: 0; }
     #slide-9 .benefit h4 {
       margin: 0 0 15px 0 !important;
       font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
-      line-height: 1.3 !important;
-      text-align: center !important;
+      line-height: 1.3 !important; text-align: center !important;
     }
-
     #slide-9 .benefit p {
       margin: 0 0 18px 0 !important;
       font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
-      line-height: 1.4 !important;
-      text-align: left !important;
+      line-height: 1.4 !important; text-align: left !important;
     }
 
-    /* Estilos específicos para el slide Tools (#slide-11) para reducir espaciado */
-    #slide-11 .benefit h4 {
-      margin: 0 0 7px 0 !important;
-      font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
-      line-height: 1.2 !important;
-      text-align: center !important;
-    }
-
-    #slide-11 .benefit p {
-      margin: 0 0 10px 0 !important;
-      font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
-      line-height: 1.3 !important;
-      text-align: left !important;
-    }
-
-    #slide-11 .benefit p:last-child {
-      margin-bottom: 0 !important;
-    }
-
-    #slide-11 .benefit {
-      padding: 7px 10px !important;
-      gap: 0 !important;
-      align-items: flex-start !important;
-    }
-
-    #slide-11 .key-benefits {
-      gap: 7px !important;
-      margin-top: 10px !important;
-    }
-
-    #slide-11 .definition-section {
-      gap: 10px !important;
-    }
-
-    #slide-11 .main-definition h3 {
-      margin: 0 0 7px 0 !important;
-    }
-
-    #slide-11 .main-definition .big-text {
-      margin: 0 0 5px 0 !important;
-    }
-
-    /* Estilos específicos para el slide Resources (#slide-10) para reducir espaciado */
+    /* Estilos específicos para el slide Roots (#slide-10) */
     #slide-10 .benefit h4 {
       margin: 0 0 10px 0 !important;
       font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
-      line-height: 1.2 !important;
-      text-align: center !important;
+      line-height: 1.2 !important; text-align: center !important;
     }
-
     #slide-10 .benefit p {
       margin: 0 0 12px 0 !important;
       font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
-      line-height: 1.3 !important;
-      text-align: left !important;
+      line-height: 1.3 !important; text-align: left !important;
     }
-
-    #slide-10 .benefit p:last-child {
-      margin-bottom: 0 !important;
-    }
-
-    #slide-10 .benefit {
-      padding: 10px 12px !important;
-      gap: 0 !important;
-      align-items: flex-start !important;
-    }
-
-    #slide-10 .key-benefits {
-      gap: 10px !important;
-      margin-top: 1rem !important;
-    }
-
-    #slide-10 .definition-section {
-      gap: 5rem !important;
-    }
-
-    #slide-10 .main-definition h3 {
-      margin: 0 0 10px 0 !important;
-      font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
-    }
-
-    #slide-10 .main-definition .big-text {
-      margin: 0 0 8px 0 !important;
-    }
+    #slide-10 .benefit p:last-child { margin-bottom: 0 !important; }
+    #slide-10 .benefit { padding: 10px 12px !important; gap: 0 !important; align-items: flex-start !important; }
+    #slide-10 .key-benefits { gap: 10px !important; margin-top: 1rem !important; }
+    #slide-10 .definition-section { gap: 5rem !important; }
+    #slide-10 .main-definition h3 { margin: 0 0 10px 0 !important; font-size: clamp(1.1rem, 2vw, 1.4rem) !important; }
+    #slide-10 .main-definition .big-text { margin: 0 0 8px 0 !important; }
 
     /* Estilos específicos para el slide 15: Fuentes y Recursos */
-    #slide-14 .benefit p a {
-      color: white !important;
-      font-weight: bold !important;
-      text-decoration: none !important;
-    }
+    #slide-14 .benefit p a { color: white !important; font-weight: bold !important; text-decoration: none !important; }
+    #slide-14 .benefit p a:hover { text-decoration: underline; }
+    #schema-uri-standard{ padding-top: 4rem; }
+    #personalized-schemas{ padding-top: 2rem; padding-left: 8%; }
 
-    #slide-14 .benefit p a:hover {
-      text-decoration: underline;
-    }
-    #schema-uri-standard{
-        padding-top: 4rem;
-    }
-    #personalized-schemas{
-        padding-top: 2rem;
-        padding-left: 8%;
-    }
-
-    /* Estilos específicos para el slide Tools (#slide-12) para reducir espaciado */
+    /* Tools (#slide-12) */
     #slide-12 .benefit h4 {
       margin: 0 0 5px 0 !important;
       font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
-      line-height: 1.2 !important;
-      text-align: center !important;
+      line-height: 1.2 !important; text-align: center !important;
     }
-
     #slide-12 .benefit p {
       margin: 0 0 8px 0 !important;
       font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
-      line-height: 1.3 !important;
-      text-align: left !important;
+      line-height: 1.3 !important; text-align: left !important;
     }
-
-    #slide-12 .benefit p:last-child {
-      margin-bottom: 0 !important;
-    }
-
-    #slide-12 .benefit {
-      padding: 8px 10px !important;
-      gap: 0 !important;
-      align-items: flex-start !important;
-    }
-
-    #slide-12 .key-benefits {
-      gap: 8px !important;
-      margin-top: 8px !important;
-    }
-
-    #slide-12 .definition-section {
-      gap: 8px !important;
-    }
-
-    #slide-12 .main-definition h3 {
-      margin: 0 0 8px 0 !important;
-    }
-
-    #slide-12 .main-definition .big-text {
-      margin: 0 0 5px 0 !important;
-    }
-
-    #slide-12 .slide-title {
-      margin-bottom: 8px !important;
-    }
+    #slide-12 .benefit p:last-child { margin-bottom: 0 !important; }
+    #slide-12 .benefit { padding: 8px 10px !important; gap: 0 !important; align-items: flex-start !important; }
+    #slide-12 .key-benefits { gap: 8px !important; margin-top: 8px !important; }
+    #slide-12 .definition-section { gap: 8px !important; }
+    #slide-12 .main-definition h3 { margin: 0 0 8px 0 !important; }
+    #slide-12 .main-definition .big-text { margin: 0 0 5px 0 !important; }
+    #slide-12 .slide-title { margin-bottom: 8px !important; }
 
     /* Estilos específicos para el slide 15: Fuentes y Recursos */
-    #slide-15 .benefit p a {
-      color: white !important;
-      font-weight: bold !important;
-      text-decoration: none !important;
-    }
+    #slide-15 .benefit p a { color: white !important; font-weight: bold !important; text-decoration: none !important; }
+    #slide-15 .benefit p a:hover { text-decoration: none !important; }
 
-    #slide-15 .benefit p a:hover {
-      text-decoration: none !important;
-    }
-
-    /* New class for last slide background effect */
+    /* Última slide: re-iluminar fondo */
     .presentation-container.last-slide-active::before {
       opacity: 1 !important;
       transition: opacity 2s ease-in !important;
     }
+
+    /* ---- MODOS COMPACTOS POR ALTURA ---- */
+    body[data-vh="short"] {
+      --nav-h: 64px;
+      --h1: clamp(1.5rem, 4vw, 2.6rem);
+      --h2: clamp(1.2rem, 3.2vw, 1.8rem);
+      --h3: clamp(1rem, 2.5vw, 1.2rem);
+      --p: clamp(0.9rem, 1.2vw, 1rem);
+      --p-sm: clamp(0.85rem, 1vw, 0.95rem);
+      --gap-sm: clamp(0.75rem, 1.5vh, 1.25rem);
+      --gap-md: clamp(1rem, 2vh, 2rem);
+      --gap-lg: clamp(1.25rem, 2.5vh, 2.5rem);
+      --padding-sm: clamp(8px, 1.5vh, 16px);
+      --padding-md: clamp(12px, 2vh, 20px);
+    }
+    body[data-vh="ultra"] {
+      --nav-h: 52px;
+      --h1: clamp(1.3rem, 3.6vw, 2.2rem);
+      --h2: clamp(1.1rem, 3vw, 1.5rem);
+      --h3: clamp(0.95rem, 2.2vw, 1.1rem);
+      --p: clamp(0.88rem, 1.1vw, 0.98rem);
+      --gap-sm: clamp(0.5rem, 1vh, 1rem);
+      --gap-md: clamp(0.75rem, 1.5vh, 1.5rem);
+      --gap-lg: clamp(1rem, 2vh, 2rem);
+      --padding-sm: clamp(6px, 1vh, 12px);
+      --padding-md: clamp(8px, 1.5vh, 16px);
+    }
+    body[data-vh="short"] .nav-dot { width: 10px; height: 10px; }
+    body[data-vh="ultra"] .nav-dot { width: 8px; height: 8px; }
+
+    /* Alturas muy bajas (ej. móvil en landscape) */
+    @media (max-height: 420px) and (orientation: landscape) {
+      .slide-content { padding: clamp(8px, 1.5vh, 16px); }
+    }
+
+    /* Accesibilidad motion */
+    @media (prefers-reduced-motion: reduce) {
+      .slide-wrapper { transition: none; }
+      .presentation-container::before { transition: none; }
+    }
+
+    /* ---- PARCHE SLIDE 7: llenar columna derecha con el SVG (más agresivo) ---- */
+    #slide-7 { flex: 1 1 auto; }
+
+    #slide-7 > div[style*="grid-template-columns"] {
+      flex: 1 1 auto !important;   /* << fuerza a crecer dentro de .slide (flex) */
+      height: 100% !important;
+      min-height: 0 !important;
+      align-items: stretch !important;
+      gap: var(--gap-md) !important;
+      margin-top: var(--gap-sm) !important;
+    }
+    #slide-7 .diagram-container {
+      height: 100% !important;
+      min-height: 0 !important;
+      padding: 0;
+    }
+    #slide-7 .diagram-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* ---- PARCHE SLIDE 11 (Resources): compactar para que el título no se vaya ---- */
+    #slide-11 .slide-title {
+      margin-bottom: clamp(6px, 0.8vh, 12px) !important;
+    }
+    #slide-11 .definition-section {
+      gap: clamp(8px, 1.2vh, 16px) !important;
+    }
+    #slide-11 .key-benefits {
+      margin-top: 0 !important;
+      gap: clamp(6px, 1vh, 12px) !important;
+    }
+    #slide-11 .main-definition .big-text {
+      margin: 0 0 clamp(6px, 1vh, 12px) 0 !important;
+    }
+    #slide-11 .benefit {
+      padding: 8px 10px !important;
+      gap: 4px !important;
+      align-items: flex-start !important;
+    }
+    #slide-11 .benefit h4 {
+      margin: 0 0 6px 0 !important;
+      font-size: clamp(1rem, 1.8vw, 1.2rem) !important;
+      line-height: 1.2 !important;
+      text-align: center !important;
+    }
+    #slide-11 .benefit p {
+      margin: 0 0 6px 0 !important;
+      font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
+      line-height: 1.3 !important;
+      text-align: left !important;
+    }
+    #slide-11 .benefit p:last-child { margin-bottom: 0 !important; }
+    /* por si hay textos con sangría horizontal en esta lámina */
+    #slide-11 .text-padding { padding-left: 0 !important; }
   </style>
 </head>
 <body>
@@ -662,41 +645,7 @@
           </div>
         </div>
 
-        <!-- Slide 11: Roots -->
-        <div class="slide transporte-mcp" id="slide-10">
-          <h1 class="slide-title" style="margin-bottom: 0">Roots</h1>
-          <div class="definition-section">
-            <div class="main-definition">
-              <h3>Definición y Propósito</h3>
-              <p class="big-text">Los roots definen los límites del sistema de archivos donde los servidores pueden operar. Permiten especificar qué <span class="highlighter">directorios y archivos</span> están accesibles, usando URIs <span class="highlighter">file://</span> únicos.</p>
-            </div>
-            <div class="key-benefits" style="margin-bottom: 0;">
-              <div class="benefit">
-                <h4>Capabilities</h4>
-                <p>Los clientes que soportan roots DEBEN declarar la capability roots y pueden indicar si soportan listChanged para notificaciones cuando la lista cambia.</p>
-              </div>
-              <div class="benefit">
-                <h4>Operaciones Principales</h4>
-                <p><strong>Listing</strong> – roots/list retorna un array de roots con uri (identificador único file://) y name opcional (nombre legible para visualización).</p>
-                <p><strong>Notifications</strong> – notifications/roots/list_changed se envía cuando la lista de roots cambia, permitiendo que los servidores actualicen su comprensión del acceso al sistema de archivos.</p>
-              </div>
-              <div class="benefit">
-                <h4>Estructura de Datos</h4>
-                <p>Un Root incluye:</p>
-                <p><strong>uri</strong> – identificador único (DEBE ser file:// URI)</p>
-                <p><strong>name</strong> – nombre legible opcional para visualización</p>
-              </div>
-            </div>
-            <div class="main-definition" id="slide-11-use-cases">
-              <h3>Casos de Uso</h3>
-              <p class="big-text">• <span class="highlighter">Directorios de proyecto</span> específicos</p>
-              <p class="big-text">• <span class="highlighter">Múltiples repositorios</span> (frontend/backend)</p>
-              <p class="big-text">• <span class="highlighter">Control de acceso</span> y seguridad</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 12: Resources -->
+        <!-- Slide 11: Resources -->
         <div class="slide transporte-mcp" id="slide-11">
           <h1 class="slide-title" style="margin-bottom: 0">Resources</h1>
           <div class="definition-section">
@@ -738,7 +687,7 @@
           <div class="definition-section">
             <div class="main-definition">
               <h3>Definición y Propósito</h3>
-              <p class="big-text">Los servers permiten que los servidores expongan funciones que el LLM puede llamar. Los tools son <span class="highlighter">model-controlled</span> pero siempre deben incluir <span class="highlighter">human-in-the-loop</span> para acciones sensibles.</p>
+              <p class="big-text">Las herramientas permiten que los servidores expongan funciones que el LLM puede llamar. Los tools son <span class="highlighter">model-controlled</span> pero siempre deben incluir <span class="highlighter">human-in-the-loop</span> para acciones sensibles.</p>
             </div>
             <div class="key-benefits">
               <div class="benefit">
@@ -880,29 +829,18 @@
     let gifStartTime = null;
     let backgroundTransitionHandled = false;
 
-    // Función para precargar la imagen estática y detectar duración del GIF
+    // Precarga y transición del fondo
     function initBackgroundTransition() {
-      // Precargar imagen estática
       const staticImg = new Image();
       staticImg.src = './images/bg_image1.png';
 
-      // Crear imagen temporal para detectar duración del GIF
       const gifImg = new Image();
       gifImg.onload = function() {
-        // Estimar duración del GIF basado en tamaño de archivo o usar valor por defecto
-        // Como no podemos detectar la duración real del GIF fácilmente,
-        // usamos un valor estimado. Puedes ajustar este valor según tu GIF específico.
-        gifDuration = 8000; // 8 segundos - ajusta según tu GIF
+        gifDuration = 8000; // ajusta según tu GIF
         gifStartTime = Date.now();
 
-        // Configurar timer para la transición
-        setTimeout(() => {
-          if (!backgroundTransitionHandled) {
-            transitionToStaticBackground();
-          }
-        }, gifDuration);
+        setTimeout(() => { if (!backgroundTransitionHandled) transitionToStaticBackground(); }, gifDuration);
 
-        // También verificar periódicamente en caso de que el timer no sea exacto
         const checkInterval = setInterval(() => {
           if (Date.now() - gifStartTime >= gifDuration && !backgroundTransitionHandled) {
             transitionToStaticBackground();
@@ -910,21 +848,13 @@
           }
         }, 500);
       };
-
       gifImg.src = './images/bg_image1_animated.gif';
     }
 
-    // Función para hacer la transición a la imagen estática
     function transitionToStaticBackground() {
       if (backgroundTransitionHandled) return;
-
       backgroundTransitionHandled = true;
-      const container = document.querySelector('.presentation-container');
-
-      // Agregar clase que activa la transición CSS
-      container.classList.add('gif-ended');
-
-      console.log('Transición a imagen estática activada');
+      document.querySelector('.presentation-container').classList.add('gif-ended');
     }
 
     let currentSlide = 0;
@@ -940,17 +870,25 @@
 
     let totalSlides = slides.length;
 
-    // 1) Quitar estilos inline a partir de la slide 3 (índice 2) para unificar styling, excepto slide 8
+    // Umbrales de altura
+    const COMPACT_MAX = 620;
+    const ULTRA_MAX   = 480;
+
+    function updateVhMode() {
+      const h = slideWrapper?.clientHeight || window.innerHeight;
+      const mode = h <= ULTRA_MAX ? 'ultra' : (h <= COMPACT_MAX ? 'short' : 'normal');
+      if (document.body.dataset.vh !== mode) document.body.dataset.vh = mode;
+    }
+
+    // Quitar estilos inline desde la slide 3 (excepto slide 8 / id slide-7)
     function stripInlineFrom(startIndex = 2) {
       for (let i = startIndex; i < slides.length; i++) {
-        // Skip slide 8 (slide-7) to preserve its layout styles
-        if (slides[i].id === 'slide-7') continue;
-        slides[i].querySelectorAll('[style]')
-          .forEach(el => el.removeAttribute('style'));
+        if (slides[i].id === 'slide-7') continue; // preserva layout propio
+        slides[i].querySelectorAll('[style]').forEach(el => el.removeAttribute('style'));
       }
     }
 
-    // 2) Generar dots de navegación según cantidad real de slides
+    // Dots de navegación
     function buildNavDots() {
       navDotsContainer.innerHTML = '';
       slides.forEach((slide, index) => {
@@ -964,50 +902,76 @@
     }
 
     function updateSlideDisplay() {
-      // Ocultar todas
       slides.forEach(s => s.classList.remove('active'));
-      // Mostrar actual
       const active = slides[currentSlide];
       if (active) active.classList.add('active');
 
-      // Actualizar dots
+      // Dots
       const dots = navDotsContainer.querySelectorAll('.nav-dot');
       dots.forEach((dot, idx) => dot.classList.toggle('active', idx === currentSlide));
 
-      // Contador
+      // Contador y botones
       slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
-
-      // Botones
       prevBtn.disabled = currentSlide === 0;
       nextBtn.disabled = currentSlide === totalSlides - 1;
 
-      // Ajustar escala para que quepa sin scroll
-      requestAnimationFrame(() => fitActiveSlide());
+      // Al cambiar de slide, vuelve al tope por si quedó scroll interno
+      slideContent.scrollTop = 0;
 
-      // Handle last slide background
+      // Ajustes de escala + modo compacto
+      requestAnimationFrame(() => {
+        updateVhMode();
+        fitActiveSlide();
+        observeImagesInActive();
+      });
+
+      // Efecto de última slide
       const container = document.querySelector('.presentation-container');
-      if (currentSlide === totalSlides - 1) {
-        container.classList.add('last-slide-active');
-      } else {
-        container.classList.remove('last-slide-active');
-      }
+      if (currentSlide === totalSlides - 1) container.classList.add('last-slide-active');
+      else container.classList.remove('last-slide-active');
     }
 
-    // 3) Auto-fit: escala .slide-content para encajar en el área visible del wrapper
+    // Auto-fit con scroll de rescate
     function fitActiveSlide() {
-      // Reset transform para medir contenido real
+      if (!slideWrapper || !slideContent) return;
+
+      // Reset para medir contenido real
       slideContent.style.transform = 'none';
+      slideContent.removeAttribute('data-scroll');
 
-      const wrapperRect = slideWrapper.getBoundingClientRect();
-      const contentRect = slideContent.getBoundingClientRect();
+      const pad = 12; // margen virtual
+      const wr = Math.max(1, slideWrapper.clientWidth  - pad);
+      const wh = Math.max(1, slideWrapper.clientHeight - pad);
 
-      // Cálculo de escala en ambos ejes (dejamos un pequeño padding virtual)
-      const pad = 12; // px
-      const scaleX = (wrapperRect.width - pad) / contentRect.width;
-      const scaleY = (wrapperRect.height - pad) / contentRect.height;
-      const scale = Math.min(scaleX, scaleY, 1); // nunca aumentar más de 1
+      const cr = Math.max(1, slideContent.scrollWidth);
+      const ch = Math.max(1, slideContent.scrollHeight);
+
+      const scaleX = wr / cr;
+      const scaleY = wh / ch;
+      let scale = Math.min(scaleX, scaleY, 1);
+
+      // Si la pantalla es baja, limita el shrink y activa scroll
+      const vhMode = document.body.dataset.vh;
+      if (scale < 0.9 && (vhMode === 'short' || vhMode === 'ultra')) {
+        scale = Math.max(scale, 0.95); // no achicar más de ~5%
+        slideContent.setAttribute('data-scroll', 'auto');
+        slideContent.scrollTop = 0;     // asegura que el título quede visible
+      }
 
       slideContent.style.transform = `scale(${scale})`;
+    }
+
+    // Re-fit cuando cargan imágenes (cambia altura)
+    function observeImagesInActive() {
+      const active = slides[currentSlide];
+      if (!active) return;
+      const imgs = active.querySelectorAll('img');
+      imgs.forEach(img => {
+        if (!img.complete) {
+          img.addEventListener('load', () => requestAnimationFrame(fitActiveSlide), { once: true });
+          img.addEventListener('error', () => requestAnimationFrame(fitActiveSlide), { once: true });
+        }
+      });
     }
 
     function nextSlide() {
@@ -1059,8 +1023,7 @@
         if (elem.requestFullscreen) elem.requestFullscreen();
         else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
       }
-      // Recalcular fit tras entrar/salir de FS
-      setTimeout(fitActiveSlide, 50);
+      setTimeout(() => { updateVhMode(); fitActiveSlide(); }, 50);
     }
 
     // Keyboard navigation
@@ -1075,21 +1038,35 @@
     nextBtn.addEventListener('click', nextSlide);
     fullscreenBtn.addEventListener('click', toggleFullscreen);
 
-    // Init
-    stripInlineFrom(2);           // limpia estilos inline desde la slide 3
-    buildNavDots();               // asegura consistencia con el número real de slides
-    totalSlides = slides.length;  // (por si en el futuro agregas o quitas)
-    updateSlideDisplay();         // muestra y ajusta escala
+    // Resize Observer para cambios reales de tamaño
+    const ro = new ResizeObserver(() => {
+      updateVhMode();
+      requestAnimationFrame(fitActiveSlide);
+    });
+    ro.observe(slideWrapper);
+    ro.observe(slideContent);
 
-    // Re-ajustar en resize/orientación
+    // Re-fit al terminar de cargar fuentes
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(fitActiveSlide));
+    }
+
+    // Init
+    stripInlineFrom(2);
+    buildNavDots();
+    totalSlides = slides.length;
+    updateVhMode();
+    updateSlideDisplay();
+
+    // Backup listeners
     let resizeRaf;
     window.addEventListener('resize', () => {
       cancelAnimationFrame(resizeRaf);
-      resizeRaf = requestAnimationFrame(fitActiveSlide);
+      resizeRaf = requestAnimationFrame(() => { updateVhMode(); fitActiveSlide(); });
     });
-    window.addEventListener('orientationchange', () => setTimeout(fitActiveSlide, 100));
+    window.addEventListener('orientationchange', () => setTimeout(() => { updateVhMode(); fitActiveSlide(); }, 100));
 
-    // Iniciar transición de fondo
+    // Fondo
     initBackgroundTransition();
   </script>
 </body>
